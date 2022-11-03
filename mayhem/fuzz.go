@@ -33,12 +33,6 @@ func mayhemit(bytes []byte) int {
             shell.NetnsLinkUp(str1, str2)
             return 0
 
-        case 3:
-            content := string(bytes)
-            var test shell.Interface
-            test.N2nLink(content)
-            return 0
-
         case 4:
             content := string(bytes)
             var test shell.Interface
