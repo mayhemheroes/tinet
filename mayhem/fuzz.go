@@ -2,6 +2,7 @@ package fuzz
 
 import "strconv"
 import "github.com/tinynetwork/tinet/internal/pkg/shell"
+import "github.com/tinynetwork/tinet/internal/pkg/utils"
 
 func mayhemit(bytes []byte) int {
 
@@ -48,6 +49,25 @@ func mayhemit(bytes []byte) int {
             content := string(bytes)
             var test shell.Interface
             test.V2cLink(content)
+            return 0
+
+        case 6:
+            content := string(bytes)
+            shell.GetContainerPid(content)
+            return 0
+
+        case 7:
+            var strArr = make([]string, len(bytes))
+            for i, byte := range bytes {
+
+                strArr[i] = string(byte)
+            }
+
+            utils.RemoveDuplicatesString(strArr)
+
+        case 8:
+            content := string(bytes)
+            utils.Exists(content)
             return 0
 
 
