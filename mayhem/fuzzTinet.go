@@ -1,4 +1,4 @@
-package fuzz
+package fuzzTinet
 
 import "strconv"
 import "github.com/tinynetwork/tinet/internal/pkg/shell"
