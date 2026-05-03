@@ -1,14 +1,14 @@
-FROM golang:1.23 as builder
+FROM golang:1.25 AS builder
 
 COPY . /tinet
-WORKDIR /tinet/mayhem
+WORKDIR /tinet
 
 RUN go install github.com/dvyukov/go-fuzz/go-fuzz@latest github.com/dvyukov/go-fuzz/go-fuzz-build@latest
-RUN go get github.com/dvyukov/go-fuzz/go-fuzz-dep
-RUN apt update && apt install -y clang
+RUN GOFLAGS=-mod=mod go get github.com/dvyukov/go-fuzz/go-fuzz-dep
+RUN apt-get update && apt-get install -y clang
 
-RUN go-fuzz-build -libfuzzer -o fuzzTinet.a && \
-    clang -fsanitize=fuzzer fuzzTinet.a -o fuzzTinet.libfuzzer
+RUN go-fuzz-build -libfuzzer -o mayhem/fuzzTinet.a github.com/tinynetwork/tinet/mayhem && \
+    clang -fsanitize=fuzzer mayhem/fuzzTinet.a -o mayhem/fuzzTinet.libfuzzer
 
 FROM debian:bookworm-slim
 COPY --from=builder /tinet/mayhem/fuzzTinet.libfuzzer /
